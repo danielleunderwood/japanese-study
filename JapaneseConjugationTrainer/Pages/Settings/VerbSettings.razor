@@ -1,0 +1,37 @@
+﻿@page "/settings/verbs"
+@inject VerbRepository verbRepository
+
+<SettingsLayout ActivePage="Verbs" />
+
+@if (allVerbs is null || activeVerbs is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	foreach (var verb in allVerbs)
+	{
+		<CheckboxSetting GenericType="Verb"
+				 IsActive="@activeVerbs.Any(v => v.PlainForm == verb.PlainForm)"
+				 ToggleCallback="@(() => Toggle(verb))">
+			<span>@verb.PlainForm</span>
+		</CheckboxSetting>
+	}
+}
+
+@code {
+	private Verb[] activeVerbs;
+	private Verb[] allVerbs;
+
+	protected override async Task OnInitializedAsync()
+	{
+		allVerbs = verbRepository.GetAll();
+		activeVerbs = await verbRepository.GetActive();
+	}
+
+	private async Task Toggle(Verb verb)
+	{
+		await verbRepository.ToggleIsActive(verb);
+		activeVerbs = await verbRepository.GetActive();
+	}
+}

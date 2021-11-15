@@ -1,0 +1,14 @@
+﻿<span>
+	@simpleDescription
+	<RootFormDescription RootForm="@VerbForm.RootForm" />
+</span>
+
+@code {
+	[Parameter]
+	public VerbForm VerbForm { get; set; }
+	private string simpleDescription =>
+		string.Join(" ",
+			new[] { 
+				VerbForm.Polarity.GetDescription(), VerbForm.PolitenessLevel.GetDescription(), VerbForm.Tense.GetDescription()
+			}.Where(element => !string.IsNullOrEmpty(element)));
+}

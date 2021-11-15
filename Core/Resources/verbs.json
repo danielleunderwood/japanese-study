@@ -1,0 +1,119 @@
+﻿[
+  {
+    "plainForm": "見る",
+    "type": 0
+  },
+  {
+    "plainForm": "歌う",
+    "type": 1
+  },
+  {
+    "plainForm": "立つ",
+    "type": 1
+  },
+  {
+    "plainForm": "怒る",
+    "type": 1
+  },
+  {
+    "plainForm": "読む",
+    "type": 1
+  },
+  {
+    "plainForm": "死ぬ",
+    "type": 1
+  },
+  {
+    "plainForm": "遊ぶ",
+    "type": 1
+  },
+  {
+    "plainForm": "続く",
+    "type": 1
+  },
+  {
+    "plainForm": "泳ぐ",
+    "type": 1
+  },
+  {
+    "plainForm": "直す",
+    "type": 1
+  },
+  {
+    "plainForm": "行く",
+    "type": 1,
+    "irregularConjugations": {
+      "conjunctive": {
+        "default": {
+          "default": {
+            "positive": "行って"
+          }
+        }
+      }
+    }
+  },
+  {
+    "plainForm": "する",
+    "type": 0,
+    "irregularConjugations": {
+      "indicative": {
+        "nonPast": {
+          "polite": {
+            "positive": "します"
+          },
+          "plain": {
+            "negative": "しない"
+          }
+        }
+      },
+      "causative": {
+        "default": {
+          "default": {
+            "positive": "させる"
+          }
+        }
+      },
+      "potential": {
+        "default": {
+          "default": {
+            "positive": "できる"
+          }
+        }
+      },
+      "passive": {
+        "default": {
+          "default": {
+            "positive": "される"
+          }
+        }
+      },
+      "presumptive": {
+        "default": {
+          "plain": {
+            "positive": "しよう"
+          }
+        }
+      },
+      "conjunctive": {
+        "default": {
+          "default": {
+            "positive": "して"
+          }
+        }
+      }
+    }
+  },
+  {
+    "plainForm": "来る",
+    "type": 0,
+    "irregularConjugations": {
+      "imperative": {
+        "default": {
+          "plain": {
+            "positive": "来い"
+          }
+        }
+      }
+    }
+  }
+]

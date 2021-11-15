@@ -1,0 +1,23 @@
+﻿<CheckboxSetting GenericType="VerbForm"
+				 IsActive="@IsActive"
+				 ToggleCallback="Toggle">
+	<VerbFormDescription VerbForm="@VerbForm" />
+</CheckboxSetting>
+
+@code {
+	[Parameter]
+	public VerbForm VerbForm { get; set; }
+
+	[Parameter]
+	public bool IsActive { get; set; }
+
+	[Parameter]
+	public EventCallback<VerbForm> ToggleCallback { get; set; }
+
+	private string description => $"{VerbForm}";
+
+	public void Toggle()
+	{
+		ToggleCallback.InvokeAsync(VerbForm);
+	}
+}

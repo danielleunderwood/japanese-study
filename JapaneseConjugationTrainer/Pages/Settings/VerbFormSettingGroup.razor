@@ -1,0 +1,31 @@
+﻿<div>
+	<CheckboxSetting IsActive="@VerbForms.All(verbForm => ActiveVerbForms.Contains(verbForm))"
+					 ToggleCallback="@(() => Toggle(VerbForms))"
+					 GenericType="List<VerbForm>">
+		Enable all <RootFormDescription RootForm="@VerbForms.First().RootForm" />
+	</CheckboxSetting>
+</div>
+<div class="indent-1">
+	@foreach (var verbForm in VerbForms)
+	{
+		<VerbFormSetting IsActive="ActiveVerbForms.Contains(verbForm)"
+					 VerbForm="verbForm"
+					 ToggleCallback="@(() => Toggle(new List<VerbForm> {verbForm}))" />
+	}
+</div>
+
+@code {
+	[Parameter]
+	public List<VerbForm> VerbForms { get; set; }
+
+	[Parameter]
+	public VerbForm[] ActiveVerbForms { get; set; }
+
+	[Parameter]
+	public EventCallback<List<VerbForm>> ToggleCallback { get; set; }
+
+	public async Task Toggle(List<VerbForm> verbForms)
+	{
+		await ToggleCallback.InvokeAsync(verbForms);
+	}
+}

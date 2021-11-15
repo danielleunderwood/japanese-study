@@ -1,0 +1,78 @@
+﻿@page "/settings/forms"
+@page "/settings"
+@inject VerbFormRepository verbFormRepository
+
+<SettingsLayout ActivePage="Forms" />
+
+@if (allVerbForms is null || activeVerbForms is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div>
+		@foreach (var (description, verbForm) in ungroupedVerbForms)
+		{
+			<VerbFormSetting IsActive="activeVerbForms.Contains(verbForm)"
+					 VerbForm="verbForm"
+					 ToggleCallback="@(() => Toggle(new List<VerbForm> { verbForm }))" />
+		}
+
+		@foreach (var (description, verbForms) in verbFormGroups)
+		{
+			<VerbFormSettingGroup ActiveVerbForms="activeVerbForms.Where(verbForm => verbForms.Contains(verbForm)).ToArray()"
+						  VerbForms="verbForms"
+						  ToggleCallback="@Toggle" />
+		}
+	</div>
+}
+
+@code {
+	private VerbForm[] activeVerbForms;
+	private VerbForm[] allVerbForms;
+
+	private Dictionary<RootForm, List<VerbForm>> verbFormGroups;
+
+	private Dictionary<RootForm, VerbForm> ungroupedVerbForms;
+
+	protected override async Task OnInitializedAsync()
+	{
+		allVerbForms = verbFormRepository.GetAll();
+		activeVerbForms = await verbFormRepository.GetActive();
+
+		verbFormGroups = new Dictionary<RootForm, List<VerbForm>>();
+		foreach(var verbForm in allVerbForms.Where(verbForm => verbForm.RootForm != RootForm.Conjunctive))
+		{
+			if(!verbFormGroups.TryGetValue(verbForm.RootForm, out var group))
+			{
+				verbFormGroups[verbForm.RootForm] = new List<VerbForm>();
+				group = verbFormGroups[verbForm.RootForm];
+			}
+			group.Add(verbForm);
+		}
+
+		ungroupedVerbForms = new()
+			{
+				[RootForm.Conjunctive] = allVerbForms.Single(verbForm => verbForm.RootForm == RootForm.Conjunctive),
+			};
+	}
+
+	private async Task Toggle(List<VerbForm> verbForms)
+	{
+		if (verbForms.All(verbForm => activeVerbForms.Contains(verbForm)))
+		{
+			foreach (var verbForm in verbForms)
+			{
+				await verbFormRepository.ToggleIsActive(verbForm);
+			}
+		}
+		else
+		{
+			foreach (var verbForm in verbForms.Where(verbForm => !activeVerbForms.Contains(verbForm)))
+			{
+				await verbFormRepository.ToggleIsActive(verbForm);
+			}
+		}
+		activeVerbForms = await verbFormRepository.GetActive();
+	}
+}

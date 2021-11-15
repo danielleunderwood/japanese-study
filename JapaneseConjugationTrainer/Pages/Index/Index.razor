@@ -1,0 +1,98 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject Conjugator conjugator
+@inject VerbFormRepository verbFormRepository
+@inject VerbRepository verbRepository
+@inject IJSRuntime jsRuntime
+
+<h1>Practice</h1>
+
+@if (verb is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<form @onsubmit="Click">
+		<p>Conjugate @verb.PlainForm in <VerbFormDescription VerbForm="@verbForm" />: </p>
+		<div class="form-group">
+			<input @bind="input" class="form-control" disabled="@(!(status is null))" @ref="responseInput" />
+		</div>
+		<button type="button" class="@buttonClass" @onclick="@(status == null ? Click : async () => Reset())" @ref="continueButton">
+			@buttonText
+		</button>
+	</form>
+}
+
+
+@code {
+	private Verb[] verbs;
+	private VerbForm[] verbForms;
+	private Verb verb;
+	private VerbForm verbForm;
+	private string input;
+	private bool? status;
+	private ElementReference responseInput;
+	private ElementReference continueButton;
+	private Random randomizer = new Random();
+
+	private string buttonClass => "btn btn-" +
+		status switch
+		{
+			null => "primary",
+			true => "success",
+			false => "danger"
+		};
+
+	private string buttonText =>
+		status switch
+		{
+			null => "Check",
+			true => "Correct!",
+			false => $"Incorrect! Correct answer: {conjugator.Conjugate(verb, verbForm)}"
+		};
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		verbForms = await verbFormRepository.GetActive();
+		verbs = await verbRepository.GetActive();
+		Reset();
+	}
+
+	protected async override Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender)
+		{
+			await responseInput.FocusAsync();
+		}
+	}
+
+	private void Reset()
+	{
+		status = null;
+		input = null;
+		verb = GetRandom(verbs);
+		verbForm = GetRandom(verbForms);
+	}
+
+	private async Task Click()
+	{
+		status = input == conjugator.Conjugate(verb, verbForm);
+		if (status == true)
+		{
+			await Task.Delay(TimeSpan.FromMilliseconds(500));
+			Reset();
+		}
+		else if (status == false)
+		{
+			await continueButton.FocusAsync();
+		}
+	}
+
+	private T GetRandom<T>(IEnumerable<T> items)
+	{
+		var index = randomizer.Next(0, items.Count());
+		return items.ElementAt(index);
+	}
+}

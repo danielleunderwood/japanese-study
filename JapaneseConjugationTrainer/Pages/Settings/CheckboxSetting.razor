@@ -1,0 +1,27 @@
+﻿@typeparam GenericType
+
+<div class="setting">
+	<label>
+		<input type="checkbox" checked="@IsActive" @onclick="Toggle" />
+		@ChildContent
+	</label>
+</div>
+
+@code {
+	[Parameter]
+	public GenericType Setting { get; set; }
+
+	[Parameter]
+	public bool IsActive { get; set; }
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+	[Parameter]
+	public EventCallback<GenericType> ToggleCallback { get; set; }
+
+	public void Toggle()
+	{
+		ToggleCallback.InvokeAsync(Setting);
+	}
+}

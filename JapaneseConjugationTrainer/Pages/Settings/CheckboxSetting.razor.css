@@ -1,0 +1,7 @@
+﻿.setting {
+    padding: 10px;
+}
+
+    .setting + .setting {
+        padding-top: 0;
+    }

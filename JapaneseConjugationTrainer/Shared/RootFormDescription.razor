@@ -1,0 +1,19 @@
+﻿<Tooltip Text="@DetailedDescription[RootForm]">
+	@RootForm.ToString().ToLower()
+</Tooltip>
+
+@code {
+	[Parameter]
+	public RootForm RootForm { get; set; }
+	private Dictionary<RootForm, string> DetailedDescription => new Dictionary<RootForm, string>()
+		{
+			[RootForm.Causative] = "I will make/let you do <something>",
+			[RootForm.Conjunctive] = "I will do <something> and...",
+			[RootForm.Imperative] = "do <something>",
+			[RootForm.Indicative] = "I do/did/will do <something>",
+			[RootForm.Passive] = "<something> is done",
+			[RootForm.Potential] = "I can do <something>",
+			[RootForm.Presumptive] = "let's do <something>",
+			[RootForm.Stative] = "I'm doing <something>"
+		};
+}
