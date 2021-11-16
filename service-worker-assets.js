@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-MKgJWVOPvzLBepbeMl4GYefME4YAWxSvtfQCWnVv6IE=",
+      "hash": "sha256-nMfLgEFZroCtGrie0HYGeP36IKV8r1aBy09q2tIETXw=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -49,7 +49,7 @@
       "url": "_framework\/Core.dll"
     },
     {
-      "hash": "sha256-XoigA\/mQtMvAgjGjY0g\/IjXHJ\/CXiQMTiuRiq2MeQ+w=",
+      "hash": "sha256-Bi4QaSNH3pUL\/6FjIJZt6Lb4EXyC9sBpkH2YYYGJWNM=",
       "url": "_framework\/JapaneseConjugationTrainer.dll"
     },
     {
@@ -245,5 +245,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "m5gnV5eV"
+  "version": "TX1u6IXA"
 };
